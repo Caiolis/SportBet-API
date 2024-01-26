@@ -7,6 +7,11 @@ async function createParticipant(name: string, balance: number) {
   return await participantRepository.post(name, balance);
 }
 
+async function getParticipants() {
+  return await participantRepository.getAll();
+}
+
 export const participantService = {
   createParticipant,
+  getParticipants,
 };

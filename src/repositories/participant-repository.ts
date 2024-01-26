@@ -9,6 +9,11 @@ async function post(name: string, balance: number) {
   });
 }
 
+async function getAll() {
+  return await prisma.participant.findMany();
+}
+
 export const participantRepository = {
   post,
+  getAll,
 };
