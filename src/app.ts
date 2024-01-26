@@ -10,6 +10,6 @@ app.use(cors());
 
 app.get('/health', (req: Request, res: Response) => {
   return res.status(httpStatus.OK).send("I'm ok!");
-})
+});
 
 export default app;
