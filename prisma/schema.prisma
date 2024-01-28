@@ -19,3 +19,16 @@ model Participant {
 
   @@map("participants")
 }
+
+model Game {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  homeTeamName String
+  awayTeamName String
+  homeTeamScore Int @default(0) 
+  awayTeamScore Int @default(0)
+  isFinished Boolean @default(false)
+
+  @@map("games")
+}

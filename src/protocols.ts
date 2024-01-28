@@ -7,3 +7,8 @@ export type ApplicationError = {
   name: string;
   message: string;
 };
+
+export type InputGameBody = {
+  homeTeamName: string;
+  awayTeamName: string;
+};
