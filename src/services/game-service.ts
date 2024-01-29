@@ -1,5 +1,5 @@
 import { nonExistentGameError } from '@/errors';
-import { gameRepository } from '@/repositories';
+import { gameRepository, betRepository } from '@/repositories';
 
 async function createGame(homeTeamName: string, awayTeamName: string) {
   return await gameRepository.post(homeTeamName, awayTeamName);
@@ -13,7 +13,9 @@ async function getById(id: number) {
   const info = await gameRepository.getById(id);
   if (!info) throw nonExistentGameError();
 
-  return info;
+  const bets = await betRepository.getAllBetsById(id);
+
+  return { ...info, bets };
 }
 
 export const gameService = {

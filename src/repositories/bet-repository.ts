@@ -13,6 +13,15 @@ async function post(betObject: InputBetBody) {
   });
 }
 
+async function getAllBetsById(gameId: number) {
+  return await prisma.bet.findMany({
+    where: {
+      gameId,
+    },
+  });
+}
+
 export const betRepository = {
   post,
+  getAllBetsById,
 };
