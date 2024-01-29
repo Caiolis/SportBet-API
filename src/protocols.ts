@@ -12,3 +12,11 @@ export type InputGameBody = {
   homeTeamName: string;
   awayTeamName: string;
 };
+
+export type InputBetBody = {
+  homeTeamScore: number;
+  awayTeamScore: number;
+  amountBet: number;
+  gameId: number;
+  participantId: number;
+};

@@ -21,8 +21,20 @@ async function getById(id: number) {
   });
 }
 
+async function changeUpdatedAt(id: number) {
+  await prisma.game.update({
+    where: {
+      id,
+    },
+    data: {
+      updatedAt: new Date().toISOString(),
+    },
+  });
+}
+
 export const gameRepository = {
   post,
   getAll,
   getById,
+  changeUpdatedAt,
 };
