@@ -9,6 +9,11 @@ async function post(homeTeamName: string, awayTeamName: string) {
   });
 }
 
+async function getAll() {
+  return await prisma.game.findMany();
+}
+
 export const gameRepository = {
   post,
+  getAll,
 };
