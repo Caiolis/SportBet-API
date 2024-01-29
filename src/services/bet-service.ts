@@ -24,6 +24,33 @@ async function createBet(betObject: InputBetBody) {
   return info;
 }
 
+async function finishBet(gameId: number) {
+  const game = await gameRepository.getById(gameId);
+  await gameRepository.changeUpdatedAt(game.id);
+  const info = await betRepository.getAllBetsById(game.id);
+
+  let sumOfWonAmmounts = 0;
+  let sumOfAllBets = 0;
+
+  for (let i = 0; i < info.length; i++) {
+    sumOfAllBets += info[i].amountBet;
+    if (info[i].homeTeamScore === game.homeTeamScore && info[i].awayTeamScore === game.awayTeamScore) {
+      sumOfWonAmmounts += info[i].amountBet;
+      betRepository.wonBet(info[i].id);
+    } else {
+      betRepository.lostBet(info[i].id);
+    }
+  }
+
+  for (let i = 0; i < info.length; i++) {
+    const ammountBetWon = (info[i].amountBet / sumOfWonAmmounts) * sumOfAllBets * (1 - 0.3);
+
+    if (info[i].homeTeamScore === game.homeTeamScore && info[i].awayTeamScore === game.awayTeamScore)
+      betRepository.updateAmmount(info[i].id, ammountBetWon);
+  }
+}
+
 export const betService = {
   createBet,
+  finishBet,
 };

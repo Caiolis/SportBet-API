@@ -32,9 +32,23 @@ async function changeUpdatedAt(id: number) {
   });
 }
 
+async function markGameAsFinished(id: number, homeTeamScore: number, awayTeamScore: number) {
+  return await prisma.game.update({
+    where: {
+      id,
+    },
+    data: {
+      isFinished: true,
+      homeTeamScore,
+      awayTeamScore,
+    },
+  });
+}
+
 export const gameRepository = {
   post,
   getAll,
   getById,
   changeUpdatedAt,
+  markGameAsFinished,
 };

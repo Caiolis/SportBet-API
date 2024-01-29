@@ -21,7 +21,58 @@ async function getAllBetsById(gameId: number) {
   });
 }
 
+async function changeUpdatedAt(id: number) {
+  await prisma.bet.update({
+    where: {
+      id,
+    },
+    data: {
+      updatedAt: new Date().toISOString(),
+    },
+  });
+}
+
+async function wonBet(id: number) {
+  await prisma.bet.update({
+    where: {
+      id,
+    },
+    data: {
+      status: 'WON',
+      updatedAt: new Date().toISOString(),
+    },
+  });
+}
+
+async function lostBet(id: number) {
+  await prisma.bet.update({
+    where: {
+      id,
+    },
+    data: {
+      status: 'LOST',
+      amountWon: 0,
+      updatedAt: new Date().toISOString(),
+    },
+  });
+}
+
+async function updateAmmount(id: number, newAmmount: number) {
+  await prisma.bet.update({
+    where: {
+      id,
+    },
+    data: {
+      amountWon: newAmmount,
+    },
+  });
+}
+
 export const betRepository = {
   post,
   getAllBetsById,
+  changeUpdatedAt,
+  wonBet,
+  lostBet,
+  updateAmmount,
 };

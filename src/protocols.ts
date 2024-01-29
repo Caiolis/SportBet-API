@@ -20,3 +20,8 @@ export type InputBetBody = {
   gameId: number;
   participantId: number;
 };
+
+export type InputFinishGameBody = {
+  homeTeamScore: number;
+  awayTeamScore: number;
+};

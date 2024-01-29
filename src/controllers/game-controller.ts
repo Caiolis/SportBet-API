@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { InputGameBody } from '@/protocols';
-import { gameService } from '@/services';
+import { InputGameBody, InputFinishGameBody } from '@/protocols';
+import { betService, gameService } from '@/services';
 
 export async function createGame(req: Request, res: Response) {
   const { homeTeamName, awayTeamName } = req.body as InputGameBody;
@@ -21,4 +21,14 @@ export async function getGameById(req: Request, res: Response) {
 
   const info = await gameService.getById(Number(id));
   return res.status(httpStatus.OK).send(info);
+}
+
+export async function finishGame(req: Request, res: Response) {
+  const { homeTeamScore, awayTeamScore } = req.body as InputFinishGameBody;
+  const { id } = req.params;
+
+  const finishGameInfo = await gameService.finishGame(Number(id), homeTeamScore, awayTeamScore);
+  betService.finishBet(Number(id));
+
+  return res.status(httpStatus.OK).send(finishGameInfo);
 }

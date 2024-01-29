@@ -1,4 +1,4 @@
-import { nonExistentGameError } from '@/errors';
+import { nonExistentGameError, gameAlreadyFinishedError } from '@/errors';
 import { gameRepository, betRepository } from '@/repositories';
 
 async function createGame(homeTeamName: string, awayTeamName: string) {
@@ -18,8 +18,17 @@ async function getById(id: number) {
   return { ...info, bets };
 }
 
+async function finishGame(id: number, homeTeamScore: number, awayTeamScore: number) {
+  const game = await getById(id);
+  if (!game) throw nonExistentGameError();
+  if (game.isFinished) throw gameAlreadyFinishedError();
+
+  return await gameRepository.markGameAsFinished(game.id, homeTeamScore, awayTeamScore);
+}
+
 export const gameService = {
   createGame,
   getAllGames,
   getById,
+  finishGame,
 };

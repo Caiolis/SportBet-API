@@ -1,10 +1,14 @@
 import { Router } from 'express';
 import { schemaValidationMiddleware } from '@/middlewares';
-import { createGame, getAllGames, getGameById } from '@/controllers';
-import { gameSchema } from '@/schemas';
+import { createGame, finishGame, getAllGames, getGameById } from '@/controllers';
+import { finishGameSchema, gameSchema } from '@/schemas';
 
 const gameRouter = Router();
 
-gameRouter.post('/', schemaValidationMiddleware(gameSchema), createGame).get('/', getAllGames).get('/:id', getGameById); // TODO add bets to the get game by id function
+gameRouter
+  .post('/', schemaValidationMiddleware(gameSchema), createGame)
+  .get('/', getAllGames)
+  .get('/:id', getGameById)
+  .post('/:id/finish', schemaValidationMiddleware(finishGameSchema), finishGame);
 
 export { gameRouter };
