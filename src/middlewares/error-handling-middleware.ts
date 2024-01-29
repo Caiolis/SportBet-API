@@ -16,5 +16,9 @@ export function errorHandlingMiddleware(
     return res.status(httpStatus.EXPECTATION_FAILED).send(error.message);
   }
 
+  if (error.name === 'nonExistentGameError') {
+    return res.status(httpStatus.NOT_FOUND).send(error.message);
+  }
+
   return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
 }

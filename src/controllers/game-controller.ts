@@ -15,3 +15,10 @@ export async function getAllGames(req: Request, res: Response) {
 
   return res.status(httpStatus.OK).send(info);
 }
+
+export async function getGameById(req: Request, res: Response) {
+  const { id } = req.params;
+
+  const info = await gameService.getById(Number(id));
+  return res.status(httpStatus.OK).send(info);
+}
