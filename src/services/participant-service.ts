@@ -2,7 +2,9 @@ import { insuficientBalanceError } from '@/errors';
 import { participantRepository } from '@/repositories';
 
 async function createParticipant(name: string, balance: number) {
-  if (balance < 1000) throw insuficientBalanceError();
+  const mininumParticipantBalance = 1000;
+
+  if (balance < mininumParticipantBalance) throw insuficientBalanceError();
 
   return await participantRepository.post(name, balance);
 }

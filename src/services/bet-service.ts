@@ -27,26 +27,27 @@ async function createBet(betObject: InputBetBody) {
 async function finishBet(gameId: number) {
   const game = await gameRepository.getById(gameId);
   await gameRepository.changeUpdatedAt(game.id);
-  const info = await betRepository.getAllBetsById(game.id);
+  const allBetsInfo = await betRepository.getAllBetsById(game.id);
 
   let sumOfWonAmmounts = 0;
   let sumOfAllBets = 0;
+  const houseFee = 0.3;
 
-  for (let i = 0; i < info.length; i++) {
-    sumOfAllBets += info[i].amountBet;
-    if (info[i].homeTeamScore === game.homeTeamScore && info[i].awayTeamScore === game.awayTeamScore) {
-      sumOfWonAmmounts += info[i].amountBet;
-      betRepository.wonBet(info[i].id);
+  for (let i = 0; i < allBetsInfo.length; i++) {
+    sumOfAllBets += allBetsInfo[i].amountBet;
+    if (allBetsInfo[i].homeTeamScore === game.homeTeamScore && allBetsInfo[i].awayTeamScore === game.awayTeamScore) {
+      sumOfWonAmmounts += allBetsInfo[i].amountBet;
+      betRepository.wonBet(allBetsInfo[i].id);
     } else {
-      betRepository.lostBet(info[i].id);
+      betRepository.lostBet(allBetsInfo[i].id);
     }
   }
 
-  for (let i = 0; i < info.length; i++) {
-    const ammountBetWon = (info[i].amountBet / sumOfWonAmmounts) * sumOfAllBets * (1 - 0.3);
+  for (let i = 0; i < allBetsInfo.length; i++) {
+    const ammountBetWon = (allBetsInfo[i].amountBet / sumOfWonAmmounts) * sumOfAllBets * (1 - houseFee);
 
-    if (info[i].homeTeamScore === game.homeTeamScore && info[i].awayTeamScore === game.awayTeamScore)
-      betRepository.updateAmmount(info[i].id, ammountBetWon);
+    if (allBetsInfo[i].homeTeamScore === game.homeTeamScore && allBetsInfo[i].awayTeamScore === game.awayTeamScore)
+      betRepository.updateAmmount(allBetsInfo[i].id, ammountBetWon);
   }
 }
 
