@@ -17,7 +17,7 @@ async function createBet(betObject: InputBetBody) {
   if (game.isFinished)
     throw unprocessableEntityError('This game has already been finished, please try to bet on another game.');
 
-  const info = await betRepository.post(betObject);
+  const betInfo = await betRepository.post(betObject);
 
   const newAmmount = participant.balance - betObject.amountBet;
   await participantRepository.updateAmmount(participant.id, newAmmount);
@@ -25,7 +25,7 @@ async function createBet(betObject: InputBetBody) {
   await participantRepository.changeUpdatedAt(participant.id);
   await gameRepository.changeUpdatedAt(game.id);
 
-  return info;
+  return betInfo;
 }
 
 async function finishBet(gameId: number) {
