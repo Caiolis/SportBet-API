@@ -25,3 +25,9 @@ export type InputFinishGameBody = {
   homeTeamScore: number;
   awayTeamScore: number;
 };
+
+export type BetsResults = {
+  id: number;
+  isBetCorrect: boolean;
+  amountBet: number;
+};

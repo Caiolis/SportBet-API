@@ -15,7 +15,9 @@ export function errorHandlingMiddleware(
     return res.status(httpStatus.EXPECTATION_FAILED).send(error.message);
   }
 
-  if (error.name === 'unprocessableEntityError') return res.status(httpStatus.UNPROCESSABLE_ENTITY).send(error.message);
+  if (error.name === 'unprocessableEntityError') {
+    return res.status(httpStatus.UNPROCESSABLE_ENTITY).send(error.message);
+  }
 
   return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
 }
