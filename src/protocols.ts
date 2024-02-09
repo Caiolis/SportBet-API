@@ -28,6 +28,7 @@ export type InputFinishGameBody = {
 
 export type BetsResults = {
   id: number;
+  participantId: number;
   isBetCorrect: boolean;
   amountBet: number;
 };

@@ -12,7 +12,12 @@ export function calculateBetResults(allBetsInfo: Bet[], game: Game) {
     const isBetCorrect =
       allBetsInfo[i].homeTeamScore === game.homeTeamScore && allBetsInfo[i].awayTeamScore === game.awayTeamScore;
 
-    results.push({ id: allBetsInfo[i].id, isBetCorrect, amountBet: allBetsInfo[i].amountBet });
+    results.push({
+      id: allBetsInfo[i].id,
+      isBetCorrect,
+      amountBet: allBetsInfo[i].amountBet,
+      participantId: allBetsInfo[i].participantId,
+    });
   }
 
   return { sumOfAllBets, houseFee, results };

@@ -1,5 +1,5 @@
 import { BetsResults } from '@/protocols';
-import { betRepository } from '@/repositories';
+import { betRepository, participantRepository } from '@/repositories';
 
 export function updateBetAmounts(
   results: BetsResults[],
@@ -11,6 +11,7 @@ export function updateBetAmounts(
     if (results[i].isBetCorrect) {
       const amountBetWon = (results[i].amountBet / sumOfWonAmounts) * sumOfAllBets * (1 - houseFee);
       betRepository.updateAmmount(results[i].id, amountBetWon);
+      participantRepository.updateAmmount(results[i].participantId, amountBetWon);
     }
   }
 }
