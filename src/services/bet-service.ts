@@ -1,17 +1,20 @@
 import { betRepository, participantRepository, gameRepository } from '@/repositories';
 import { InputBetBody } from '@/protocols';
-import { betGreaterThanAmmountError, gameDoesNotExistError, participantDoesNotExistError } from '@/errors';
-import { gameAlreadyFinishedError } from '@/errors/game-already-finished-error';
+import { unprocessableEntityError } from '@/errors';
 
 async function createBet(betObject: InputBetBody) {
   const game = await gameRepository.getById(betObject.gameId);
-  if (!game) throw gameDoesNotExistError();
+  if (!game) throw unprocessableEntityError('This game does not exist, please try to bet on another game');
 
   const participant = await participantRepository.getById(betObject.participantId);
-  if (!participant) throw participantDoesNotExistError();
+  if (!participant) throw unprocessableEntityError('This participant does not exist.');
 
-  if (participant.balance < betObject.amountBet) throw betGreaterThanAmmountError();
-  if (game.isFinished) throw gameAlreadyFinishedError();
+  if (participant.balance < betObject.amountBet)
+    throw unprocessableEntityError(
+      'Your bet is greater than the ammount this participant has, please try to bet a lower ammount.',
+    );
+  if (game.isFinished)
+    throw unprocessableEntityError('This game has already been finished, please try to bet on another game.');
 
   const info = await betRepository.post(betObject);
 

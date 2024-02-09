@@ -1,4 +1,4 @@
-import { nonExistentGameError, gameAlreadyFinishedError } from '@/errors';
+import { unprocessableEntityError } from '@/errors';
 import { gameRepository, betRepository } from '@/repositories';
 
 async function createGame(homeTeamName: string, awayTeamName: string) {
@@ -11,7 +11,7 @@ async function getAllGames() {
 
 async function getById(id: number) {
   const info = await gameRepository.getById(id);
-  if (!info) throw nonExistentGameError();
+  if (!info) throw unprocessableEntityError('This game does not exist, please try again.');
 
   const bets = await betRepository.getAllBetsById(id);
 
@@ -20,8 +20,9 @@ async function getById(id: number) {
 
 async function finishGame(id: number, homeTeamScore: number, awayTeamScore: number) {
   const game = await getById(id);
-  if (!game) throw nonExistentGameError();
-  if (game.isFinished) throw gameAlreadyFinishedError();
+  if (!game) throw unprocessableEntityError('This game does not exist, please try again.');
+  if (game.isFinished)
+    throw unprocessableEntityError('This game has already been finished, please try to bet on another game.');
 
   return await gameRepository.markGameAsFinished(game.id, homeTeamScore, awayTeamScore);
 }

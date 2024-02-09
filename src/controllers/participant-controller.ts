@@ -5,14 +5,13 @@ import { participantService } from '@/services';
 
 export async function createParticipant(req: Request, res: Response) {
   const { name, balance } = req.body as InputParticipantBody;
+  const participantInfo = await participantService.createParticipant(name, balance);
 
-  const info = await participantService.createParticipant(name, balance);
-
-  return res.status(httpStatus.OK).send(info);
+  return res.status(httpStatus.OK).send(participantInfo);
 }
 
 export async function getParticipants(req: Request, res: Response) {
-  const info = await participantService.getParticipants();
+  const participantInfo = await participantService.getParticipants();
 
-  return res.status(httpStatus.OK).send(info);
+  return res.status(httpStatus.OK).send(participantInfo);
 }
